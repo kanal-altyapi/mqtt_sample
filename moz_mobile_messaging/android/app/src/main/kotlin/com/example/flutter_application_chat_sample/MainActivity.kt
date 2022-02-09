@@ -1,4 +1,4 @@
-package com.moz.mobilemessaging.tst
+package com.mozaik.mobilemessaging.tst
 
 import io.flutter.embedding.android.FlutterActivity
 
