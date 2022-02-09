@@ -1,4 +1,4 @@
-package com.example.flutter_application_chat_sample
+package com.moz.mobilemessaging.tst
 
 import io.flutter.embedding.android.FlutterActivity
 

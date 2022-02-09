@@ -189,11 +189,13 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
               ),
             ),
-            Row(
-              children: [
-                _buildTypeMessageTextField(),
-                _buildSendButton(algo),
-              ],
+            SafeArea(
+              child: Row(
+                children: [
+                  _buildTypeMessageTextField(),
+                  _buildSendButton(algo),
+                ],
+              ),
             ),
           ],
         ),

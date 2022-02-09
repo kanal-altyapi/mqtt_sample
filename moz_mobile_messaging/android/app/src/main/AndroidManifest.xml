@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.flutter_application_chat_sample">
+    package="com.moz.mobilemessaging.tst">
    <application
         android:label="flutter_application_chat_sample"
         android:name="${applicationName}"
