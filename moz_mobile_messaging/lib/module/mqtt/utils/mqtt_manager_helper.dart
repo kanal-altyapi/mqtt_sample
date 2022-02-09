@@ -1,12 +1,11 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_application_chat_sample/config/constants.dart';
-import 'package:flutter_application_chat_sample/module/chat/blocs/chat_bloc.dart';
-import 'package:flutter_application_chat_sample/module/chat/blocs/chat_event.dart';
-import 'package:flutter_application_chat_sample/module/home/blocs/home_bloc.dart';
-import 'package:flutter_application_chat_sample/module/local_db/utils/db_manager.dart';
-import 'package:flutter_application_chat_sample/utils/SharedObjects.dart';
+import 'package:moz_mobile_messaging/config/constants.dart';
+import 'package:moz_mobile_messaging/module/chat/blocs/chat_bloc.dart';
+import 'package:moz_mobile_messaging/module/chat/blocs/chat_event.dart';
+import 'package:moz_mobile_messaging/module/home/blocs/home_bloc.dart';
+import 'package:moz_mobile_messaging/module/local_db/utils/db_manager.dart';
+import 'package:moz_mobile_messaging/utils/SharedObjects.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 
 class MqttManagerHelper {

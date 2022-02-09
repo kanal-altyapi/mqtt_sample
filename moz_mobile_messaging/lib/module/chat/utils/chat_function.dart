@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_chat_sample/core/abstract/base_functions.dart';
-import 'package:flutter_application_chat_sample/module/chat/models/models/chat_message.dart';
-import 'package:flutter_application_chat_sample/module/local_db/utils/db_manager.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:moz_mobile_messaging/config/constants.dart';
+import 'package:moz_mobile_messaging/core/abstract/base_functions.dart';
+import 'package:moz_mobile_messaging/module/chat/models/models/chat_message.dart';
+import 'package:moz_mobile_messaging/module/local_db/utils/db_manager.dart';
+import 'package:moz_mobile_messaging/module/mqtt/state_provider/mqtt_state.dart';
+import 'package:moz_mobile_messaging/module/mqtt/utils/mqtt_manager.dart';
+import 'package:moz_mobile_messaging/utils/SharedObjects.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
-import '../../../config/constants.dart';
-import '../../../utils/SharedObjects.dart';
-import '../../mqtt/state_provider/mqtt_state.dart';
-import '../../mqtt/utils/mqtt_manager.dart';
+
 
 class ChatFunction extends BaseChatFunction {
   MQTTManager? _manager;

@@ -1,6 +1,5 @@
-//import 'package:coocoo/managers/mqtt_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_chat_sample/module/mqtt/utils/mqtt_manager.dart';
+import 'package:moz_mobile_messaging/module/mqtt/utils/mqtt_manager.dart';
 
 class MQTTState with ChangeNotifier {
   MQTTManager? _manager;

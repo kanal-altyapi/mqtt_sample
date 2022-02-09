@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_chat_sample/module/mqtt/utils/mqtt_manager_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moz_mobile_messaging/module/mqtt/utils/mqtt_manager_helper.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import '../../chat/blocs/chat_bloc.dart';

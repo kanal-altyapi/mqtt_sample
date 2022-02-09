@@ -1,38 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_chat_sample/config/constants.dart';
-import 'package:flutter_application_chat_sample/utils/SharedObjects.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../chat/screens/chat_screen.dart';
-import '../../mqtt/state_provider/mqtt_state.dart';
-import '../../mqtt/utils/mqtt_manager.dart';
-import '../blocs/home_bloc.dart';
+import 'package:moz_mobile_messaging/module/mqtt/screens/settings_mqtt_screen.dart';
+import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+import '../../mqtt/state_provider/mqtt_state.dart';
+import 'chat_screen.dart';
+import '../../mqtt/utils/mqtt_manager.dart';
+
+class ChatHomeScreen extends StatefulWidget {
+  ChatHomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<ChatHomeScreen> createState() => _ChatScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
-  late HomeBloc homeBloc;
-  String currentSelectedTopic = '';
+class _ChatScreenState extends State<ChatHomeScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  void setUserNameAndNameIfNull() {
-    // String? uid = SharedObjects.prefs.getString(Constants.sessionUid);
-    // String? username = SharedObjects.prefs.getString(Constants.sessionUsername);
-    // String? fullName = SharedObjects.prefs.getString(Constants.fullName);
-  }
-
-  @override
-  void initState() {
-    WidgetsBinding.instance?.addObserver(this);
-    homeBloc = BlocProvider.of<HomeBloc>(context);
-    super.initState();
-    homeBloc.add(ConnectToServerEvent(context));
-  }
-
+  String currentSelectedTopic = '';
+  bool isConnectionActive = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +29,44 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             key: _formKey,
             child: ListView(
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    isConnectionActive == true
+                        ? Icon(
+                            Icons.connected_tv,
+                            color: Colors.green.shade600,
+                            size: 40.0,
+                          )
+                        : Icon(
+                            Icons.connected_tv,
+                            color: Colors.red.shade600,
+                          ),
+                    // const SizedBox(
+                    //   width: 10,
+                    // ),
+                    // TextButton(
+                    //   child: const Text(
+                    //     'Open Connection',
+                    //   ),
+                    //   onPressed: () {},
+                    // ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    TextButton(
+                      child: const Text(
+                        'Connection Settings',
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SettingMqttScreen()),
+                        );
+                      },
+                    ),
+                  ],
+                ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -85,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       icon: const Icon(
                         Icons.send_rounded,
                         size: 30,
-                        color: Colors.blue,
+                        color: Colors.red,
                       ),
                     ),
                   ],
@@ -94,22 +116,5 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             ),
           )),
     );
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.paused) {
-      homeBloc.add(DisconnectEvent());
-    }
-    if (state == AppLifecycleState.resumed) {
-      homeBloc.add(ConnectToServerEvent(context));
-    }
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
-    super.dispose();
   }
 }

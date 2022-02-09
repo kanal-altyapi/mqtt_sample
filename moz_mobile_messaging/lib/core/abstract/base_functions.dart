@@ -1,8 +1,7 @@
-
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_application_chat_sample/module/chat/models/models/chat_message.dart';
+import 'package:moz_mobile_messaging/module/chat/models/models/chat_message.dart';
+
 
 
 abstract class BaseFunction {

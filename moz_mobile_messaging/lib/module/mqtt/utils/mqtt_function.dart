@@ -1,10 +1,5 @@
-// import 'package:coocoo/config/Constants.dart';
-// import 'package:coocoo/functions/BaseFunctions.dart';
-// import 'package:coocoo/managers/mqtt_manager.dart';
-// import 'package:coocoo/stateProviders/mqtt_state.dart';
-// import 'package:coocoo/utils/SharedObjects.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_chat_sample/module/mqtt/models/mqtt_setting_model.dart';
+import 'package:moz_mobile_messaging/module/mqtt/models/mqtt_setting_model.dart';
 import 'package:provider/provider.dart';
 import '../../../config/constants.dart';
 import '../../../core/abstract/base_functions.dart';

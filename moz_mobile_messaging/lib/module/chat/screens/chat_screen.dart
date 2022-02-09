@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'package:flutter_emoji/flutter_emoji.dart' as emj;
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_application_chat_sample/module/chat/models/models/chat_message.dart';
-import 'package:flutter_application_chat_sample/widgets/image_full_screen_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:moz_mobile_messaging/module/chat/models/models/chat_message.dart';
+import 'package:moz_mobile_messaging/widgets/image_full_screen_widget.dart';
 import '../../../config/design_constants.dart';
 import '../blocs/chat_bloc.dart';
 import '../blocs/chat_event.dart';

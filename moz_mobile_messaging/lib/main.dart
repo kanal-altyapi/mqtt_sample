@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_chat_sample/splashscreen.dart';
-import 'package:flutter_application_chat_sample/utils/SharedObjects.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moz_mobile_messaging/splashscreen.dart';
+import 'package:moz_mobile_messaging/utils/SharedObjects.dart';
 import 'package:provider/provider.dart';
 import 'module/chat/blocs/chat_bloc.dart';
 import 'module/home/blocs/home_bloc.dart';
