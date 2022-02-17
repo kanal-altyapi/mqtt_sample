@@ -33,7 +33,7 @@ class ChatItemWidget extends StatelessWidget {
   Widget buildMessageBody(String msgBody, String msgType, bool isSelf, BuildContext context) {
     if (msgType == 'text' || msgType == null) {
       return Text(
-        parser.emojify("${msgBody ?? ':)'}"),
+        parser.emojify("${msgBody}"),
         style: TextStyle(
           color: isSelf ? selfMessageColor : otherMessageColor,
           fontSize: 15.0,
