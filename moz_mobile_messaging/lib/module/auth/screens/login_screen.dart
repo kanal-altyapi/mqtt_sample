@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           initialValue: 'username',
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
-                            hintText: 'Enter your username',
+                            hintText: 'Enter your email',
                             label: Text('username'),
                           ),
                           onSaved: (String? value) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moz_mobile_messaging/module/auth/screens/login_screen.dart';
 import 'package:moz_mobile_messaging/utils/SharedObjects.dart';
+import 'module/auth/screens/login_screen_v2.dart';
 import 'module/home/screens/home_screen.dart';
 import 'module/mqtt/utils/mqtt_function.dart';
 // import 'package:permission_handler/permission_handler.dart';
@@ -22,9 +23,9 @@ class _SplashScreenState extends State<SplashScreen> {
     newUser = (SharedObjects.prefs.getBool('login') ?? true);
     debugPrint(newUser.toString());
     if (newUser == false) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
     } else {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Login())); // LoginScreen()));
     }
   }
 
