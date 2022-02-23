@@ -1,21 +1,17 @@
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_dropdown.dart';
 import 'package:country_pickers/utils/utils.dart';
-// import 'package:coocoo/screens/otp_screen.dart';
-// import 'package:coocoo/config/Constants.dart';
-// import 'package:coocoo/functions/UserDataFunction.dart';
-// import 'package:coocoo/stateProviders/number_state.dart';
-// import 'package:coocoo/utils/SharedObjects.dart';
-// import 'package:country_pickers/country.dart';
-// import 'package:country_pickers/country_pickers.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:moz_mobile_messaging/module/auth/screens/otp_screen.dart';
 import 'package:provider/provider.dart';
-
 import '../../../config/Constants.dart';
 import '../../../utils/SharedObjects.dart';
+import '../../user_data/utils/UserDataFunction.dart';
+import '../models/session_model.dart';
 import '../state_provider/number_state.dart';
+import 'enter_name.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -27,15 +23,13 @@ class _LoginState extends State<Login> {
   // Firestore _firestore = Firestore.instance;
   TextEditingController mobileNumberController = TextEditingController();
   //final FirebaseAuth _auth = FirebaseAuth.instance;
-  //UserDataFunction userDataFunction = UserDataFunction();
-
+  UserDataFunction userDataFunction = UserDataFunction();
+  String phoneNumber = '';
   String countryCode = '90';
 
-  // TODO: Handle the exception nicely here instead of just printing out the error
-  // final PhoneVerificationFailed _verificationFailed =
-  //     (AuthException authException) {
-  //   print(authException.message);
-  // };
+  Future<void> _verificationFailed   (FirebaseAuthException authException) async{
+    debugPrint(authException.message);
+  }
 
   Future<bool> _showContinueDialog() async {
     return (await showDialog(
@@ -50,15 +44,11 @@ class _LoginState extends State<Login> {
               ),
               FlatButton(
                 onPressed: () async {
-                  context.read<NumberState>().setPhoneNumber(
-                      "$countryCode${mobileNumberController.text}");
+                  context.read<NumberState>().setPhoneNumber("$countryCode${mobileNumberController.text}");
                   await SharedObjects.prefs.setString(Constants.sessionCountryCode, countryCode);
-                  // await userDataFunction.verifyPhoneNumber(
-                  //     context,
-                  //     '+$countryCode' + mobileNumberController.text.toString(),
-                  //     _verificationFailed);
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => OTPScreen()));
+                  await userDataFunction.verifyPhoneNumber(context, '+$countryCode' + mobileNumberController.text.toString(), _verificationFailed);
+                  await _login();
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => OTPScreen()));
                 },
                 child: Text('Tamam'),
               ),
@@ -152,6 +142,9 @@ class _LoginState extends State<Login> {
                                 inputFormatters: [
                                   FilteringTextInputFormatter.deny(RegExp(r'\s+')) // no spaces allowed
                                 ],
+                                onChanged: (value) {
+                                  phoneNumber = value;
+                                },
                                 validator: (value) {
                                   if (value!.length != 10) {
                                     return 'Please enter 10 digits';
@@ -189,5 +182,15 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  Future<bool> _login() async {
+    await SharedObjects.prefs.setBool('login', false);
+    await SharedObjects.prefs.setString(Constants.sessionUid, countryCode + phoneNumber);
+    //await SharedObjects.prefs.setString(Constants.sessionUsername, ');
+    //await SharedObjects.prefs.setString(Constants.fullName, username);
+    initialSession(username: '', phoneNumber: phoneNumber, fullName: '');
+
+    return true;
   }
 }

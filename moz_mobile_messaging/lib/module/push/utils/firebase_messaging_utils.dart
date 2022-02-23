@@ -1,8 +1,10 @@
-import 'package:firebase_core/firebase_core.dart';
+import 'dart:convert';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../../firebase/utils/firebase_utils.dart';
+import 'package:http/http.dart' as http;
 
 FirebaseMessagingUtils firebaseMessagingUtils = FirebaseMessagingUtils();
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -58,5 +60,41 @@ class FirebaseMessagingUtils {
 
     _token = await FirebaseMessaging.instance.getToken();
     debugPrint('Token:$_token');
+  }
+
+  Future<void> sendPushMessage() async {
+    if (_token == null) {
+      print('Unable to send FCM message, no token exists.');
+      return;
+    }
+
+    try {
+      await http.post(
+        Uri.parse('https://api.rnfirebase.io/messaging/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: _constructFCMPayload(_token),
+      );
+      print('FCM request for device sent!');
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  int _messageCount = 0;
+  String _constructFCMPayload(String? token) {
+    _messageCount++;
+    return jsonEncode({
+      'token': token,
+      'data': {
+        'via': 'FlutterFire Cloud Messaging!!!',
+        'count': _messageCount.toString(),
+      },
+      'notification': {
+        'title': 'Hello FlutterFire!',
+        'body': 'This notification (#$_messageCount) was created via FCM!',
+      },
+    });
   }
 }

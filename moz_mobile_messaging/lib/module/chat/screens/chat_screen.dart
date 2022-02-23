@@ -6,6 +6,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:moz_mobile_messaging/module/chat/models/models/chat_message.dart';
 import 'package:moz_mobile_messaging/widgets/image_full_screen_widget.dart';
 import '../../../config/design_constants.dart';
+import '../../user_data/utils/UserDataFunction.dart';
 import '../blocs/chat_bloc.dart';
 import '../blocs/chat_event.dart';
 import '../blocs/chat_state.dart';
@@ -26,6 +27,7 @@ class _ChatScreenState extends State<ChatScreen> {
   String lastReceivedMessage = '';
   late ChatBloc chatBloc;
   List<ChatMessage> allMessages = [];
+  UserDataFunction userDataFunction = UserDataFunction();
   late ScrollController _scrollController;
   TextEditingController chatTextController = TextEditingController();
   var parser = emj.EmojiParser();
@@ -108,11 +110,12 @@ class _ChatScreenState extends State<ChatScreen> {
           String msgToSend = parser.unemojify(chatTextController.text);
 
           chatBloc.add(SendMessageEvent(context, msgToSend, tempChatId));
-          // userDataFunction.sendNotification(
-          //   toUid: widget.toContact.phoneNumber,
-          //   title: "${widget.toContact.name}",
-          //   content: msgToSend,
-          // );
+      
+          userDataFunction.sendNotification(
+            toUid: 'phoneNumber',
+            title:'title', //"${widget.toContact.name}",
+            content: msgToSend,
+          );
           chatTextController.clear();
         },
         child: Neumorphic(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moz_mobile_messaging/module/auth/screens/otp_screen.dart';
 import '../../../config/constants.dart';
 import '../../../utils/SharedObjects.dart';
 import '../../home/screens/home_screen.dart';
@@ -82,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () async {
                         _formKey.currentState!.save();
                         await _login();
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) =>   OTPScreen()));
                       },
                     ),
                   ],
