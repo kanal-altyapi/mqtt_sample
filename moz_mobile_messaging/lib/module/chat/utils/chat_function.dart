@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:moz_mobile_messaging/config/constants.dart';
@@ -11,10 +12,13 @@ import 'package:moz_mobile_messaging/utils/SharedObjects.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+import 'dart:math';
+import '../../../config/Paths.dart';
 
 
 class ChatFunction extends BaseChatFunction {
   MQTTManager? _manager;
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String? myUid = SharedObjects.prefs.getString(Constants.sessionUid);
   @override
   void blockUser(BuildContext context, String chatId) {
@@ -22,9 +26,41 @@ class ChatFunction extends BaseChatFunction {
   }
 
   @override
-  Future<void> createChatIdForContact(String contactPhoneNumber) {
-    // TODO: implement createChatIdForContact
-    throw UnimplementedError();
+  Future<String> createChatIdForContact(String contactPhoneNumber) async {
+    String chatId;
+    String? uId = SharedObjects.prefs.getString(Constants.sessionUid);
+    CollectionReference usersCollection =
+        _firestore.collection(Paths.usersPath);
+    DocumentReference userRef = usersCollection.doc(uId);
+    DocumentReference contactRef = usersCollection.doc(contactPhoneNumber);
+    DocumentSnapshot userSnapshot = await userRef.get();
+
+    // if chatId doesn't exists for that contact then create new ChatId and update it
+    // for both the user and the contact
+    // else use the chatId which already exists
+    if (userSnapshot.get('chats') == null ||
+        userSnapshot.get('chats')[contactPhoneNumber] == null) {
+      chatId = createChatId();
+      await userRef.set({
+        'chats': {contactPhoneNumber: chatId}
+      }, SetOptions( merge: true));
+      await contactRef.set({
+        'chats': {uId: chatId}
+      }, SetOptions( merge: true));
+    } else {
+      chatId = userSnapshot.get('chats')[contactPhoneNumber];
+    }
+
+    return chatId;
+  }
+
+  String createChatId() {
+    final Random _random = Random.secure();
+    final int idLength = 16; // length of the chatId
+
+    var values = List<int>.generate(idLength, (i) => _random.nextInt(256));
+
+    return base64Url.encode(values);
   }
 
   @override
