@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
     newUser = (SharedObjects.prefs.getBool('login') ?? true);
     debugPrint(newUser.toString());
     if (newUser == false) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>   HomeScreen()));
     } else {
       Navigator.push(context, MaterialPageRoute(builder: (context) => Login())); // LoginScreen()));
     }

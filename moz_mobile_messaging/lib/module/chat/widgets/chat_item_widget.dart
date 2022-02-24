@@ -1,15 +1,17 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_emoji/flutter_emoji.dart' as emj;
-import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_emoji/flutter_emoji.dart' as emj;
+
 import '../../../config/constants.dart';
-import '../../../widgets/image_full_screen_widget.dart';
 import '../models/models/chat_message.dart';
 
 class ChatItemWidget extends StatelessWidget {
-  ChatItemWidget({Key? key, required this.message}) : super(key: key);
   final ChatMessage message;
   final parser = emj.EmojiParser();
+
+  ChatItemWidget(this.message);
 
   final Color selfMessageColor = Colors.white;
   final Color otherMessageColor = Colors.black;
@@ -18,19 +20,20 @@ class ChatItemWidget extends StatelessWidget {
   final Color otherMessageBackgroundColor = Colors.white;
 
   @override
-  @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
         children: [
-          buildMessageContainer(message.isSelf, message.msg, context, message.msgType),
+          buildMessageContainer(
+              message.isSelf, message.msg, context, message.msgType),
           buildTimeStamp(context, message.isSelf, message.time.toString())
         ],
       ),
     );
   }
 
-  Widget buildMessageBody(String msgBody, String msgType, bool isSelf, BuildContext context) {
+  Widget buildMessageBody(
+      String msgBody, String msgType, bool isSelf, BuildContext context) {
     if (msgType == 'text' || msgType == null) {
       return Text(
         parser.emojify("${msgBody}"),
@@ -44,12 +47,12 @@ class ChatItemWidget extends StatelessWidget {
       try {
         return GestureDetector(
           onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ImageFullScreenWidget(
-                          memoryImage: msgBody,
-                        )));
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) => ImageFullScreen(
+            //               memoryImage: msgBody,
+            //             )));
           },
           child: Container(
             width: 95.0,
@@ -62,7 +65,7 @@ class ChatItemWidget extends StatelessWidget {
                   color: isSelf ? Colors.white : Colors.black,
                   size: 22.0,
                 ),
-                const SizedBox(width: 8.0),
+                SizedBox(width: 8.0),
                 Text(
                   "Photo",
                   style: TextStyle(
@@ -82,7 +85,8 @@ class ChatItemWidget extends StatelessWidget {
     }
   }
 
-  Row buildMessageContainer(bool isSelf, String msgBody, BuildContext context, String msgType) {
+  Row buildMessageContainer(
+      bool isSelf, String msgBody, BuildContext context, String msgType) {
     double lrEdgeInsets = 15.0;
     double tbEdgeInsets = 10.0;
 
@@ -90,34 +94,53 @@ class ChatItemWidget extends StatelessWidget {
       children: <Widget>[
         Container(
           child: buildMessageBody(msgBody, msgType, isSelf, context),
-          padding: EdgeInsets.fromLTRB(lrEdgeInsets, tbEdgeInsets, lrEdgeInsets, tbEdgeInsets),
-          constraints: const BoxConstraints(maxWidth: 300.0),
+          padding: EdgeInsets.fromLTRB(
+              lrEdgeInsets, tbEdgeInsets, lrEdgeInsets, tbEdgeInsets),
+          constraints: BoxConstraints(maxWidth: 300.0),
           decoration: BoxDecoration(
-              color: isSelf ? selfMessageBackgroundColor : otherMessageBackgroundColor,
+              color: isSelf
+                  ? selfMessageBackgroundColor
+                  : otherMessageBackgroundColor,
               borderRadius: BorderRadius.only(
-                bottomLeft: const Radius.circular(8.0),
-                bottomRight: const Radius.circular(8.0),
-                topLeft: isSelf ? const Radius.circular(8.0) : Radius.zero,
-                topRight: isSelf ? Radius.zero : const Radius.circular(8.0),
+                bottomLeft: Radius.circular(8.0),
+                bottomRight: Radius.circular(8.0),
+                topLeft: isSelf ? Radius.circular(8.0) : Radius.zero,
+                topRight: isSelf ? Radius.zero : Radius.circular(8.0),
               ),
               border: Border.all(color: Colors.grey)),
-          margin: EdgeInsets.only(right: isSelf ? 5.0 : 0, left: isSelf ? 0 : 5.0),
+          margin:
+              EdgeInsets.only(right: isSelf ? 5.0 : 0, left: isSelf ? 0 : 5.0),
         )
       ],
-      mainAxisAlignment: isSelf ? MainAxisAlignment.end : MainAxisAlignment.start, // aligns the chatitem to right end
+      mainAxisAlignment: isSelf
+          ? MainAxisAlignment.end
+          : MainAxisAlignment.start, // aligns the chatitem to right end
     );
   }
 
   Row buildTimeStamp(BuildContext context, bool isSelf, String timeStamp) {
-    final currTime = DateFormat().add_y().add_MMMd().add_jm().format(DateTime.fromMillisecondsSinceEpoch(int.parse(timeStamp)));
-    return Row(mainAxisAlignment: isSelf ? MainAxisAlignment.end : MainAxisAlignment.start, children: <Widget>[
-      Container(
-        child: Text(
-          currTime,
-          style: Theme.of(context).textTheme.caption,
-        ),
-        margin: EdgeInsets.only(left: isSelf ? 5.0 : 4.0, right: isSelf ? 4.0 : 5.0, top: 3.0, bottom: 6.0),
-      )
-    ]);
+    final currTime = DateFormat()
+        .add_y()
+        .add_MMMd()
+        .add_jm()
+        .format(DateTime.fromMillisecondsSinceEpoch(int.parse(timeStamp)));
+    return Row(
+        mainAxisAlignment:
+            isSelf ? MainAxisAlignment.end : MainAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            child: Text(
+              currTime,
+              style: Theme.of(context).textTheme.caption,
+            ),
+            margin: EdgeInsets.only(
+                left: isSelf ? 5.0 : 4.0,
+                right: isSelf ? 4.0 : 5.0,
+                top: 3.0,
+                bottom: 6.0),
+          )
+        ]);
   }
+
+
 }

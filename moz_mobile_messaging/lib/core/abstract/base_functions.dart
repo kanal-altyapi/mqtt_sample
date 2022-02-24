@@ -3,6 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:moz_mobile_messaging/module/chat/models/models/chat_message.dart';
 
 
+enum MozIdLocation {
+  InLocalDb,
+  InFriendRequests,
+  InSentRequests,
+  Nowhere,
+}
 
 abstract class BaseFunction {
   void dispose();

@@ -5,6 +5,8 @@ import 'package:moz_mobile_messaging/utils/SharedObjects.dart';
 import 'package:provider/provider.dart';
 import 'module/auth/state_provider/number_state.dart';
 import 'module/chat/blocs/chat_bloc.dart';
+import 'module/contacts/blocks/add_friends/add_friends_bloc.dart';
+import 'module/contacts/blocks/contacts/contacts_bloc.dart';
 import 'module/firebase/utils/firebase_utils.dart';
 import 'module/home/blocs/home_bloc.dart';
 import 'module/mqtt/state_provider/mqtt_state.dart';
@@ -24,11 +26,17 @@ void main() async {
 
   runApp(MultiBlocProvider(
     providers: [
+    BlocProvider<ContactsBloc>(
+        create: (context) => ContactsBloc(),
+      ),
       BlocProvider<ChatBloc>(
         create: (context) => ChatBloc(),
       ),
       BlocProvider<HomeBloc>(
         create: (context) => HomeBloc(),
+      ),
+       BlocProvider<AddFriendsBloc>(
+        create: (context) => AddFriendsBloc(),
       ),
       BlocProvider<TimerBloc>(
         create: (context) => TimerBloc(),

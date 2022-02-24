@@ -1,13 +1,17 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../config/Paths.dart';
 import '../../../config/constants.dart';
 import '../../../core/abstract/base_functions.dart';
+import '../../../models/my_contact.dart';
 import '../../../utils/SharedObjects.dart';
 import '../../auth/state_provider/number_state.dart';
 import '../../chat/utils/chat_function.dart';
@@ -103,9 +107,23 @@ class UserDataFunction extends BaseUserDataFunction {
     }
   }
 
+
+ 
   @override
-  void onShare(BuildContext context) {
-    // TODO: implement onShare
+  void onShare(BuildContext context) async {
+    // A builder is used to retrieve the context immediately
+    // surrounding the RaisedButton.
+    //
+    // The context's `findRenderObject` returns the first
+    // RenderObject in its descendent tree when it's not
+    // a RenderObjectWidget. The RaisedButton's RenderObject
+    // has its position and size after it's built.
+     final box = context.findRenderObject() as RenderBox?;
+    await Share.share(
+        "https://play.google.com/store/apps/details?id=com.digantakalita.coocoo",
+        subject: "Lets have our private chats on"
+            "this New Cool Messenger HitUp from now on. Its way safer than the others.",
+        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
   }
 
   @override
@@ -158,5 +176,18 @@ class UserDataFunction extends BaseUserDataFunction {
     } else {
       return permission;
     }
+  }
+
+    @override
+  Future<List<MyContact>> getContactsFromDB() async {
+    List<MyContact> contacts = [];
+
+    List<Map<dynamic, dynamic>> dbData = await DBManager.db.getAllContacts();
+
+    dbData.forEach((map) {
+      contacts.add(MyContact.fromMap(map));
+    });
+
+    return contacts;
   }
 }

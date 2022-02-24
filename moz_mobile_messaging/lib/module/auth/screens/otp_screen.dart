@@ -104,7 +104,7 @@ class _OTPScreenState extends State<OTPScreen> {
             if (currPermission == PermissionStatus.granted) {
               await userDataFunction.loadPhoneContactsV2(context);
               isVerifying = false;
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>   HomeScreen()));
             } else {
               setState(() {
                 isVerifying = false;
